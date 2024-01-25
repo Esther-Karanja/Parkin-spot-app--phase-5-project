@@ -8,7 +8,7 @@ with app.app_context():
     #db.session.commit()
 
     parking1 = ParkingSpot(
-        type= "Parkig Lot",
+        type= "Parking Lot",
         location = "Holy Family Basilica Parking",
         capacity= "536 cars",
         pricing = """0-2hrs : Ksh 100
@@ -25,9 +25,9 @@ Exit the car park within 15 minutes after the payment.""")
     
    
         
-    if parking1.geocode_location():
-        db.session.add(parking1)
-        db.session.commit()
+    #if parking1.geocode_location():
+        #db.session.add(parking1)
+        #db.session.commit()
     
-    #db.session.add(parking1)
-    #db.session.commit()
+    db.session.add(parking1)
+    db.session.commit()

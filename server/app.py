@@ -2,7 +2,7 @@
 
 from flask import Flask, make_response,jsonify,request
 from flask_migrate import Migrate
-from models import db, User
+from models import db, User, ParkingSpot
 import jwt
 
 JWT_SECRET = 'secret'
@@ -62,4 +62,45 @@ def login():
 
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
     return make_response(jsonify({"msg": "Login successful", "token": token}), 200)
+
+@app.route('/search',methods=['GET'])
+def get_parkings():
+    parking_spots = []
+    for parking in ParkingSpot.query.all():
+        pricing = parking.pricing
+        ps_dict = {
+            "id": parking.id,
+            "location": parking.location,
+            "type": parking.type,
+            "capacity": parking.capacity,
+            "pricing": pricing.split("\n"),
+        }
+
+        if parking.restrictions:
+            restriction = parking.restrictions
+            ps_dict["restrictions"] = restriction.split("\n")
+        parking_spots.append(ps_dict)
+
+    return make_response(jsonify(parking_spots), 200)
+
+@app.route('/search/<string:location>',methods=['GET'])
+def get_parking(location):
+    query = ParkingSpot.query.filter_by(location=location)
+    parking_spot = []
+    for parking in query.all():
+        pricing = parking.pricing
+        ps_dict = {
+            "id": parking.id,
+            "location": parking.location,
+            "type": parking.type,
+            "capacity": parking.capacity,
+            "pricing": pricing.split("\n"),
+        }
+
+        if parking.restrictions:
+            restriction = parking.restrictions
+            ps_dict["restrictions"] = restriction.split("\n")
+        parking_spot.append(ps_dict)
+        
+    return make_response(jsonify(parking_spot), 200)
 
