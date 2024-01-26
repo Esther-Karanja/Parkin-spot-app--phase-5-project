@@ -75,44 +75,42 @@ def login():
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
     return make_response(jsonify({"msg": "Login successful", "token": token}), 200)
 
-@app.route('/search',methods=['GET'])
+@app.route('/parking',methods=['GET'])
 def get_parkings():
-    parking_spots = []
-    for parking in ParkingSpot.query.all():
-        pricing = parking.pricing
+    location = request.args.get('location')
+    if location:
+        parking_query = ParkingSpot.query.filter_by(location=location).first()
+    
         ps_dict = {
-            "id": parking.id,
-            "location": parking.location,
-            "type": parking.type,
-            "capacity": parking.capacity,
-            "pricing": pricing.split("\n"),
+                "id": parking_query.id,
+                "location": parking_query.location,
+                "type": parking_query.type,
+                "capacity": parking_query.capacity,
+                "pricing": parking_query.pricing,
         }
 
-        if parking.restrictions:
-            restriction = parking.restrictions
+        if parking_query.restrictions:
+            restriction = parking_query.restrictions
             ps_dict["restrictions"] = restriction.split("\n")
-        parking_spots.append(ps_dict)
+            
+        return make_response(jsonify(ps_dict), 200)
+    else:
+        parking_spots = []
+        for parking in ParkingSpot.query.all():
+            pricing = parking.pricing
+            ps_dict = {
+                "id": parking.id,
+                "location": parking.location,
+                "type": parking.type,
+                "capacity": parking.capacity,
+                "pricing": pricing.split("\n"),
+            }
 
-    return make_response(jsonify(parking_spots), 200)
+            if parking.restrictions:
+                restriction = parking.restrictions
+                ps_dict["restrictions"] = restriction.split("\n")
+            parking_spots.append(ps_dict)
 
-@app.route('/search/<string:location>',methods=['GET'])
-def get_parking(location):
-    query = ParkingSpot.query.filter_by(location=location)
-    parking_spot = []
-    for parking in query.all():
-        pricing = parking.pricing
-        ps_dict = {
-            "id": parking.id,
-            "location": parking.location,
-            "type": parking.type,
-            "capacity": parking.capacity,
-            "pricing": pricing.split("\n"),
-        }
-
-        if parking.restrictions:
-            restriction = parking.restrictions
-            ps_dict["restrictions"] = restriction.split("\n")
-        parking_spot.append(ps_dict)
-        
-    return make_response(jsonify(parking_spot), 200)
+        return make_response(jsonify(parking_spots), 200)
+    
 
