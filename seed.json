@@ -1,0 +1,236 @@
+[
+    {
+      "location": "Kenyatta Avenue",
+      "latitude": -1.286389,
+      "longitude": 36.821944,
+      "type": "outdoor",
+      "capacity": 50,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Westlands Mall",
+      "latitude": -1.263333,
+      "longitude": 36.808333,
+      "type": "indoor",
+      "capacity": 30,
+      "pricing": "daily",
+      "restrictions": "No oversized vehicles"
+    },
+    {
+      "location": "City Market",
+      "latitude": -1.279167,
+      "longitude": 36.826111,
+      "type": "outdoor",
+      "capacity": 40,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Yaya Centre",
+      "latitude": -1.292222,
+      "longitude": 36.782778,
+      "type": "indoor",
+      "capacity": 25,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Sarit Centre",
+      "latitude": -1.259444,
+      "longitude": 36.793611,
+      "type": "outdoor",
+      "capacity": 60,
+      "pricing": "hourly",
+      "restrictions": "No overnight parking"
+    },
+    {
+      "location": "Upper Hill Parking",
+      "latitude": -1.296389,
+      "longitude": 36.807222,
+      "type": "outdoor",
+      "capacity": 70,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Gigiri Parking",
+      "latitude": -1.241944,
+      "longitude": 36.810556,
+      "type": "indoor",
+      "capacity": 45,
+      "pricing": "hourly",
+      "restrictions": "Reserved for embassy staff"
+    },
+    {
+      "location": "KICC Parking",
+      "latitude": -1.286944,
+      "longitude": 36.8225,
+      "type": "outdoor",
+      "capacity": 55,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Prestige Plaza",
+      "latitude": -1.301111,
+      "longitude": 36.778611,
+      "type": "indoor",
+      "capacity": 35,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Village Market",
+      "latitude": -1.221389,
+      "longitude": 36.802222,
+      "type": "outdoor",
+      "capacity": 50,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Adams Arcade",
+      "latitude": -1.305833,
+      "longitude": 36.767778,
+      "type": "indoor",
+      "capacity": 30,
+      "pricing": "daily",
+      "restrictions": "No commercial vehicles"
+    },
+    {
+      "location": "Thika Road Mall",
+      "latitude": -1.215833,
+      "longitude": 36.885278,
+      "type": "outdoor",
+      "capacity": 40,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Kilimani Parking",
+      "latitude": -1.292778,
+      "longitude": 36.784444,
+      "type": "indoor",
+      "capacity": 25,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "South C Parking",
+      "latitude": -1.316111,
+      "longitude": 36.829722,
+      "type": "outdoor",
+      "capacity": 35,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Ridgeways Mall",
+      "latitude": -1.222778,
+      "longitude": 36.863611,
+      "type": "indoor",
+      "capacity": 60,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Langata Parking",
+      "latitude": -1.391389,
+      "longitude": 36.76,
+      "type": "outdoor",
+      "capacity": 45,
+      "pricing": "hourly",
+      "restrictions": "No pets allowed"
+    },
+    {
+      "location": "Galleria Mall",
+      "latitude": -1.345556,
+      "longitude": 36.710833,
+      "type": "indoor",
+      "capacity": 70,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Nyayo Stadium",
+      "latitude": -1.315278,
+      "longitude": 36.811389,
+      "type": "outdoor",
+      "capacity": 55,
+      "pricing": "hourly",
+      "restrictions": "Event parking only"
+    },
+    {
+      "location": "Karen Parking",
+      "latitude": -1.325,
+      "longitude": 36.721389,
+      "type": "indoor",
+      "capacity": 50,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Eastlands Parking",
+      "latitude": -1.285833,
+      "longitude": 36.878889,
+      "type": "outdoor",
+      "capacity": 40,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Two Rivers Mall",
+      "latitude": -1.214722,
+      "longitude": 36.806389,
+      "type": "indoor",
+      "capacity": 55,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Karen Blixen Coffee Garden",
+      "latitude": -1.315833,
+      "longitude": 36.729722,
+      "type": "outdoor",
+      "capacity": 30,
+      "pricing": "hourly",
+      "restrictions": "No oversized vehicles"
+    },
+    {
+      "location": "Giraffe Centre Parking",
+      "latitude": -1.363333,
+      "longitude": 36.724444,
+      "type": "indoor",
+      "capacity": 40,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Kazuri Beads Women's Co-op Parking",
+      "latitude": -1.265,
+      "longitude": 36.828333,
+      "type": "outdoor",
+      "capacity": 25,
+      "pricing": "hourly",
+      "restrictions": null
+    },
+    {
+      "location": "Matbronze Cafe Parking",
+      "latitude": -1.288611,
+      "longitude": 36.766667,
+      "type": "indoor",
+      "capacity": 35,
+      "pricing": "daily",
+      "restrictions": null
+    },
+    {
+      "location": "Kibera Parking",
+      "latitude": -1.312222,
+      "longitude": 36.778889,
+      "type": "outdoor",
+      "capacity": 50,
+      "pricing": "hourly",
+      "restrictions": null
+    }
+  ]

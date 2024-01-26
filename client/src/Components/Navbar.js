@@ -64,11 +64,11 @@ const Navbar = () => {
                     <Link to='/reviews'>Reviews</Link>
                 </li>
                 <li>
-                    <Link to='/login'>Login</Link>
+                    <Link to='/signuplogin'>Login</Link>
                 </li>
-                <li>
+                {/* <li>
                     <Link to='/sign-up'>Sign-Up</Link>
-                </li>
+                </li> */}
                 <li>
                     <Link to='/admin-panel'>Admin Panel</Link>
                 </li>

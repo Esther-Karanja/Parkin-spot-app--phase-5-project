@@ -10,6 +10,8 @@ class User(db.Model):
     surname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
+    _is_activated = db.Column(db.Boolean, default=False)
+    phone = db.Column(db.String(100), nullable=True)
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

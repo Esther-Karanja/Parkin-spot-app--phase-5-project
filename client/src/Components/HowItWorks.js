@@ -48,7 +48,9 @@ const HowItWorks = () => {
             <p>{data.text}</p>
           </div>
         ))}
+        {/* <button className='secondary-button'>Show parking spaces</button> */}
       </div>
+
     </div>
   );
 };
