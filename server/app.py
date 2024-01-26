@@ -79,22 +79,27 @@ def login():
 @app.route('/parking',methods=['GET'])
 def get_parkings():
     location = request.args.get('location')
+    parking_query = ParkingSpot.query.filter_by(location=location).first()
     if location:
-        parking_query = ParkingSpot.query.filter_by(location=location).first()
+        if parking_query:
     
-        ps_dict = {
-                "id": parking_query.id,
-                "location": parking_query.location,
-                "type": parking_query.type,
-                "capacity": parking_query.capacity,
-                "pricing": parking_query.pricing,
-        }
+            ps_dict = {
+                    "id": parking_query.id,
+                    "location": parking_query.location,
+                    "latitude" : parking_query.latitude,
+                    "longitude" : parking_query.longitude,
+                    "type": parking_query.type,
+                    "capacity": parking_query.capacity,
+                    "pricing": parking_query.pricing,
+            }
 
-        if parking_query.restrictions:
-            restriction = parking_query.restrictions
-            ps_dict["restrictions"] = restriction.split("\n")
-            
-        return make_response(jsonify(ps_dict), 200)
+            if parking_query.restrictions:
+                restriction = parking_query.restrictions
+                ps_dict["restrictions"] = restriction.split("\n")
+                
+            return make_response(jsonify(ps_dict), 200)
+        else:
+            return make_response(jsonify({"message":"Parking does not exist"}),404)
     else:
         parking_spots = []
         for parking in ParkingSpot.query.all():
@@ -147,4 +152,43 @@ def add_parking():
     db.session.add(new_ps)
     db.session.commit()
 
-    return make_response(jsonify({"message":"Parking successfully created"}),200)
+    return make_response(jsonify({"message":"Parking successfully created"}),201)
+
+@app.route('/update-parking',methods=['PATCH'])
+def update_parking():
+    location = request.args.get('location')
+    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+
+    if not parking_spot:
+        return make_response(jsonify({"message":"Car park does not exist"}),404)
+    
+    data = request.get_json()
+
+    if 'location' in data:
+        parking_spot.location = data['location']
+
+    if 'type' in data:
+        parking_spot.type = data['type']
+
+    if 'capacity' in data:
+        parking_spot.capacity = data['capacity']
+
+    if 'pricing' in data:
+        parking_spot.pricing = data['pricing']
+
+    if 'restrictions' in data:
+        parking_spot.restrictions = data['restrictions']
+
+    db.session.commit()
+
+    return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
+
+@app.route('/delete-parking',methods=['DELETE'])
+def delete_parking():
+    location = request.args.get('location')
+    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+
+    db.session.delete(parking_spot)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Parking spot successfully deleted"}),200)
