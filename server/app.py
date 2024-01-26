@@ -8,6 +8,7 @@ from utils.sms import SMS
 from utils.mail import Mail
 import random
 import math
+import requests
 
 JWT_SECRET = 'secret'
 
@@ -113,4 +114,37 @@ def get_parkings():
 
         return make_response(jsonify(parking_spots), 200)
     
+@app.route('/add-parking',methods=['POST'])
+def add_parking():
+    request_data = request.get_json()
 
+    rev_geocode_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+            'q': request_data['location'],
+            'format': 'json',
+            'limit': 1
+        }
+
+    response = requests.get(rev_geocode_url, params=params)
+    response_data = response.json()
+
+    if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
+            loc_lat = float(response_data[0]['lat'])
+            loc_long = float(response_data[0]['lon'])
+    
+    restriction = request_data.get('restrictions') 
+
+    new_ps = ParkingSpot(
+            location = request_data['location'],
+            latitude = loc_lat,
+            longitude = loc_long,
+            type = request_data['type'],
+            capacity = request_data['capacity'],
+            pricing = request_data['pricing'],
+            restrictions = restriction
+    )
+
+    db.session.add(new_ps)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Parking successfully created"}),200)
