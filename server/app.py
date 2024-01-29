@@ -46,8 +46,8 @@ def signup():
 
     user = User(firstname=firstname, surname=surname, email=email, password=password)
 
-    sms = SMS()
-    sms.send_sms(phone, otp)
+    # sms = SMS()
+    # sms.send_sms(phone, otp)
     db.session.add(user)
     db.session.commit()
 
