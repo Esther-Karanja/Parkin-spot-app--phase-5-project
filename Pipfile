@@ -9,6 +9,8 @@ sqlalchemy = "*"
 flask-migrate = "*"
 pyjwt = "*"
 twilio = "*"
+cors = "*"
+flask-cors = "*"
 
 [dev-packages]
 
