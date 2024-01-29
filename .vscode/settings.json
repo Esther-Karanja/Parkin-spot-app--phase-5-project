@@ -3,7 +3,7 @@
         {
             "previewLimit": 50,
             "driver": "SQLite",
-            "name": "local",
+            "name": "data",
             "database": "server/instance/app.db"
         }
     ]
