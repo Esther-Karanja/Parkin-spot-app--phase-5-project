@@ -10,6 +10,8 @@ flask-migrate = "*"
 pyjwt = "*"
 twilio = "*"
 haversine = "*"
+cors = "*"
+flask-cors = "*"
 
 [dev-packages]
 
