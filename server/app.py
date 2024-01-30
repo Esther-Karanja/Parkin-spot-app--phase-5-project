@@ -9,6 +9,7 @@ from utils.mail import Mail
 import random
 import math
 import requests
+import haversine as hs
 
 JWT_SECRET = 'secret'
 
@@ -76,45 +77,77 @@ def login():
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
     return make_response(jsonify({"msg": "Login successful", "token": token}), 200)
 
+def form_parking_dict(parking_resp):
+    pricing = parking_resp.pricing
+    ps_dict = {
+            "id": parking_resp.id,
+            "location": parking_resp.location,
+            "latitude" : parking_resp.latitude,
+            "longitude" : parking_resp.longitude,
+            "type": parking_resp.type,
+            "capacity": parking_resp.capacity,
+            "pricing": pricing.split("\n"),
+            }
+
+    if parking_resp.restrictions:
+        restriction = parking_resp.restrictions
+        ps_dict["restrictions"] = restriction.split("\n")
+
+    return ps_dict
+
+def reverse_geocoding(input_location):
+    rev_geocode_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+            'q': input_location,
+            'format': 'json',
+            'limit': 1
+        }
+
+    response = requests.get(rev_geocode_url, params=params)
+    response_data = response.json()
+
+    if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
+            loc_lat = float(response_data[0]['lat'])
+            loc_long = float(response_data[0]['lon'])
+
+    input_coordinates = (loc_lat,loc_long)
+
+    return input_coordinates
+
+
 @app.route('/parking',methods=['GET'])
 def get_parkings():
     location = request.args.get('location')
-    parking_query = ParkingSpot.query.filter_by(location=location).first()
-    if location:
+    location_coordinates = reverse_geocoding(location)
+    if location: 
+        parking_query = ParkingSpot.query.filter_by(location=location).first()
         if parking_query:
-    
-            ps_dict = {
-                    "id": parking_query.id,
-                    "location": parking_query.location,
-                    "latitude" : parking_query.latitude,
-                    "longitude" : parking_query.longitude,
-                    "type": parking_query.type,
-                    "capacity": parking_query.capacity,
-                    "pricing": parking_query.pricing,
-            }
-
-            if parking_query.restrictions:
-                restriction = parking_query.restrictions
-                ps_dict["restrictions"] = restriction.split("\n")
+            specific_parking_dict = form_parking_dict(parking_query)
+            specific_parking_coordinates = (parking_query.latitude,parking_query.longitude)
+            nearby_parking = []
+            for parking in ParkingSpot.query.all():
+                other_parking_coordinates = (parking.latitude,parking.longitude)
+                distance = hs.haversine(specific_parking_coordinates,other_parking_coordinates)
+                if distance < 4:
+                    nearby_parking_dict = form_parking_dict(parking)
+                    nearby_parking.append(nearby_parking_dict)
                 
-            return make_response(jsonify(ps_dict), 200)
+            return make_response(jsonify({"specific spot":specific_parking_dict,"nearby parking":nearby_parking}), 200)
+        elif location_coordinates:
+            parking_in_location = []
+            for parking in ParkingSpot.query.all():
+                parking_coordinates = (parking.latitude,parking.longitude)
+                distance = hs.haversine(parking_coordinates,location_coordinates)
+                if distance < 4:
+                    parking_dict = form_parking_dict(parking)
+                    parking_in_location.append(parking_dict)
+            return parking_in_location
         else:
-            return make_response(jsonify({"message":"Parking does not exist"}),404)
+            return make_response(jsonify({"message":"Parking/Location does not exist"}),404)
     else:
         parking_spots = []
         for parking in ParkingSpot.query.all():
-            pricing = parking.pricing
-            ps_dict = {
-                "id": parking.id,
-                "location": parking.location,
-                "type": parking.type,
-                "capacity": parking.capacity,
-                "pricing": pricing.split("\n"),
-            }
-
-            if parking.restrictions:
-                restriction = parking.restrictions
-                ps_dict["restrictions"] = restriction.split("\n")
+            ps_dict = form_parking_dict(parking)
             parking_spots.append(ps_dict)
 
         return make_response(jsonify(parking_spots), 200)
@@ -178,6 +211,12 @@ def update_parking():
 
     if 'restrictions' in data:
         parking_spot.restrictions = data['restrictions']
+
+    if 'latitude' in data:
+        parking_spot.latitude = data['latitude']
+
+    if 'longitude' in data:
+        parking_spot.longitude = data['longitude']
 
     db.session.commit()
 
