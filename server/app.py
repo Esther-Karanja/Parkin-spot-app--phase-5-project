@@ -2,13 +2,15 @@
 
 from flask import Flask, make_response,jsonify,request
 from flask_migrate import Migrate
-from models import db, User
+from models import db, User, ParkingSpot
 from flask_cors import CORS
 import jwt
 from utils.sms import SMS
 from utils.mail import Mail
 import random
 import math
+import requests
+import haversine as hs
 
 JWT_SECRET = 'secret'
 
@@ -78,3 +80,157 @@ def login():
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
     return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success"}), 200)
 
+def form_parking_dict(parking_resp):
+    pricing = parking_resp.pricing
+    ps_dict = {
+            "id": parking_resp.id,
+            "location": parking_resp.location,
+            "latitude" : parking_resp.latitude,
+            "longitude" : parking_resp.longitude,
+            "type": parking_resp.type,
+            "capacity": parking_resp.capacity,
+            "pricing": pricing.split("\n"),
+            }
+
+    if parking_resp.restrictions:
+        restriction = parking_resp.restrictions
+        ps_dict["restrictions"] = restriction.split("\n")
+
+    return ps_dict
+
+def reverse_geocoding(input_location):
+    rev_geocode_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+            'q': input_location,
+            'format': 'json',
+            'limit': 1
+        }
+
+    response = requests.get(rev_geocode_url, params=params)
+    response_data = response.json()
+
+    if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
+            loc_lat = float(response_data[0]['lat'])
+            loc_long = float(response_data[0]['lon'])
+
+    input_coordinates = (loc_lat,loc_long)
+
+    return input_coordinates
+
+
+@app.route('/parking',methods=['GET'])
+def get_parkings():
+    location = request.args.get('location')
+    location_coordinates = reverse_geocoding(location)
+    if location: 
+        parking_query = ParkingSpot.query.filter_by(location=location).first()
+        if parking_query:
+            specific_parking_dict = form_parking_dict(parking_query)
+            specific_parking_coordinates = (parking_query.latitude,parking_query.longitude)
+            nearby_parking = []
+            for parking in ParkingSpot.query.all():
+                other_parking_coordinates = (parking.latitude,parking.longitude)
+                distance = hs.haversine(specific_parking_coordinates,other_parking_coordinates)
+                if distance < 4:
+                    nearby_parking_dict = form_parking_dict(parking)
+                    nearby_parking.append(nearby_parking_dict)
+                
+            return make_response(jsonify({"specific spot":specific_parking_dict,"nearby parking":nearby_parking}), 200)
+        elif location_coordinates:
+            parking_in_location = []
+            for parking in ParkingSpot.query.all():
+                parking_coordinates = (parking.latitude,parking.longitude)
+                distance = hs.haversine(parking_coordinates,location_coordinates)
+                if distance < 4:
+                    parking_dict = form_parking_dict(parking)
+                    parking_in_location.append(parking_dict)
+            return parking_in_location
+        else:
+            return make_response(jsonify({"message":"Parking/Location does not exist"}),404)
+    else:
+        parking_spots = []
+        for parking in ParkingSpot.query.all():
+            ps_dict = form_parking_dict(parking)
+            parking_spots.append(ps_dict)
+
+        return make_response(jsonify(parking_spots), 200)
+    
+@app.route('/add-parking',methods=['POST'])
+def add_parking():
+    request_data = request.get_json()
+
+    rev_geocode_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+            'q': request_data['location'],
+            'format': 'json',
+            'limit': 1
+        }
+
+    response = requests.get(rev_geocode_url, params=params)
+    response_data = response.json()
+
+    if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
+            loc_lat = float(response_data[0]['lat'])
+            loc_long = float(response_data[0]['lon'])
+    
+    restriction = request_data.get('restrictions') 
+
+    new_ps = ParkingSpot(
+            location = request_data['location'],
+            latitude = loc_lat,
+            longitude = loc_long,
+            type = request_data['type'],
+            capacity = request_data['capacity'],
+            pricing = request_data['pricing'],
+            restrictions = restriction
+    )
+
+    db.session.add(new_ps)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Parking successfully created"}),201)
+
+@app.route('/update-parking',methods=['PATCH'])
+def update_parking():
+    location = request.args.get('location')
+    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+
+    if not parking_spot:
+        return make_response(jsonify({"message":"Car park does not exist"}),404)
+    
+    data = request.get_json()
+
+    if 'location' in data:
+        parking_spot.location = data['location']
+
+    if 'type' in data:
+        parking_spot.type = data['type']
+
+    if 'capacity' in data:
+        parking_spot.capacity = data['capacity']
+
+    if 'pricing' in data:
+        parking_spot.pricing = data['pricing']
+
+    if 'restrictions' in data:
+        parking_spot.restrictions = data['restrictions']
+
+    if 'latitude' in data:
+        parking_spot.latitude = data['latitude']
+
+    if 'longitude' in data:
+        parking_spot.longitude = data['longitude']
+
+    db.session.commit()
+
+    return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
+
+@app.route('/delete-parking',methods=['DELETE'])
+def delete_parking():
+    location = request.args.get('location')
+    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+
+    db.session.delete(parking_spot)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Parking spot successfully deleted"}),200)
