@@ -2,7 +2,7 @@
 
 from flask import Flask, make_response,jsonify,request
 from flask_migrate import Migrate
-from models import db, User, ParkingSpot
+from models import db, User, ParkingSpot,Review
 from flask_cors import CORS
 import jwt
 from utils.sms import SMS
@@ -108,21 +108,21 @@ def reverse_geocoding(input_location):
 
     response = requests.get(rev_geocode_url, params=params)
     response_data = response.json()
-
+    
     if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
             loc_lat = float(response_data[0]['lat'])
             loc_long = float(response_data[0]['lon'])
 
     input_coordinates = (loc_lat,loc_long)
-
     return input_coordinates
 
 
 @app.route('/parking',methods=['GET'])
 def get_parkings():
     location = request.args.get('location')
-    location_coordinates = reverse_geocoding(location)
+    
     if location: 
+        location_coordinates = reverse_geocoding(location)
         parking_query = ParkingSpot.query.filter_by(location=location).first()
         if parking_query:
             specific_parking_dict = form_parking_dict(parking_query)
@@ -234,3 +234,74 @@ def delete_parking():
     db.session.commit()
 
     return make_response(jsonify({"message":"Parking spot successfully deleted"}),200)
+
+#Read reviews
+
+@app.route('/reviews',methods=['GET'])
+def read_reviews():
+        reviews = []
+        for parking_review in Review.query.all():
+            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
+            user = User.query.filter_by(id=parking_review.user_id).first()
+            review_dict = {
+                "review": parking_review.review,
+                "location" : parking_spot.location,
+                "user_firstname": user.firstname,
+                "user_surname": user.surname,
+                "time": parking_review.time,
+            }
+                
+            reviews.append(review_dict)
+
+        return make_response(jsonify(reviews),200)
+
+#Filtered reviews
+@app.route('/reviews/<string:location>')
+def filtered_reviews(location):
+    parking_spot_location = ParkingSpot.query.filter_by(location=location).first()
+    parking_spot_review = Review.query.filter_by(location_id=parking_spot_location.id).first()
+    if parking_spot_review is not None:
+        parkingspot_reviews = []
+        for parking_review in Review.query.all():
+            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
+            user = User.query.filter_by(id=parking_review.user_id).first()
+            review_dict = {
+                "review": parking_review.review,
+                "location" : parking_spot.location,
+                "user_firstname": user.firstname,
+                "user_surname": user.surname,
+                "time": parking_review.time,
+            }
+                
+            parkingspot_reviews.append(review_dict)
+            return make_response(jsonify(parkingspot_reviews),200)
+    else:
+        return make_response(jsonify({"message":"Parking spot has not been reviewed"}))
+
+
+
+#Create reviews
+@app.route('/add-reviews',methods=['POST'])
+def add_reviews():
+    data = request.get_json()
+
+    new_review = Review(
+        review = data['review'],
+        location_id = data['location_id'],
+        user_id = data['user_id']
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Review successfully created"}),201)
+
+#Delete reviews
+@app.route('/delete-review',methods=['DELETE'])
+def delete_review():
+    review = request.args.get('review_id')
+    parking_spot_review = Review.query.filter_by(id=review).first()
+    db.session.delete(parking_spot_review)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"Review successfully deleted"}),200)
