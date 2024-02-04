@@ -11,6 +11,7 @@ import random
 import math
 import requests
 import haversine as hs
+from decorators import admin_endpoint, client_endpoint
 
 JWT_SECRET = 'secret'
 
@@ -23,6 +24,8 @@ CORS(app)
 migrate = Migrate(app, db)
 
 db.init_app(app)
+
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -119,6 +122,7 @@ def reverse_geocoding(input_location):
 
 
 @app.route('/parking',methods=['GET'])
+@client_endpoint
 def get_parkings():
     location = request.args.get('location')
     location_coordinates = reverse_geocoding(location)
@@ -154,8 +158,11 @@ def get_parkings():
             parking_spots.append(ps_dict)
 
         return make_response(jsonify(parking_spots), 200)
-    
+
+
+
 @app.route('/add-parking',methods=['POST'])
+@admin_endpoint  
 def add_parking():
     request_data = request.get_json()
 
@@ -190,6 +197,7 @@ def add_parking():
 
     return make_response(jsonify({"message":"Parking successfully created"}),201)
 
+@admin_endpoint
 @app.route('/update-parking',methods=['PATCH'])
 def update_parking():
     location = request.args.get('location')
@@ -225,6 +233,7 @@ def update_parking():
 
     return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
 
+@admin_endpoint
 @app.route('/delete-parking',methods=['DELETE'])
 def delete_parking():
     location = request.args.get('location')
