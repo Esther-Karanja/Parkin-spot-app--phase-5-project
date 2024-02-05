@@ -12,6 +12,7 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     _is_activated = db.Column(db.Boolean, default=False)
     phone = db.Column(db.String(100), nullable=True)
+    role = db.Column(db.String(100), nullable=False, default='client')
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -33,4 +34,5 @@ class ParkingSpot(db.Model):
     def __repr__(self):
         return f"<ParkingSpot(id={self.id}, location={self.location}, type={self.type}, capacity={self.capacity}, pricing={self.pricing}, restrictions={self.restrictions})>"
     
-    
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
