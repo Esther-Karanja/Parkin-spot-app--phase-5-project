@@ -214,7 +214,7 @@ def add_parking():
                     db.session.commit()
 
                     return make_response(jsonify({"message":"Parking successfully created"}),201)
-         else:
+        else:
             return make_response(jsonify({"message":"Enter valid location"}))
 
     except Exception as e:
