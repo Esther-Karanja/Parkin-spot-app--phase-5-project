@@ -81,7 +81,7 @@ const widget= ({type}) => {
       <div className='left'>
         <span className='widget-title'>{data.title}</span>
         <span className='widget-counter'>{data.isNumber} {number}</span>
-        <span className='widget-link'>see all users</span>
+        <span className='widget-link'>{data.link}</span>
       </div>
       <div className='right'>
         <div className='percentage positive'>
