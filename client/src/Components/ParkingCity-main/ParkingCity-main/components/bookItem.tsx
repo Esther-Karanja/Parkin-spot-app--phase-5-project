@@ -7,7 +7,7 @@ const BookItem = ({ booking }) => {
       <Image source={{ uri: booking.image }} style={styles.image} />
       <View style={styles.rightContainer}>
         <Text style={styles.title}>{booking.title}</Text>
-        <Text style={styles.description}>This is bthe best availbale parking spot.Awesome</Text>
+        <Text style={styles.description}>This is the best available parking spot.Awesome</Text>
 
         <View style={styles.footer}>
         <Text style={styles.price}>Kshs {booking.price}</Text>
