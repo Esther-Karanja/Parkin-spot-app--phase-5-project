@@ -11,6 +11,7 @@ import Adminlogin from './Components/Adminlogin';
 import AdminnavBar from './Components/AdminnavBar';
 import AdminSidebar from './Components/AdminSidebar';
 
+
 function App() {
   return (
     <div className="App">
@@ -27,6 +28,7 @@ function App() {
           <Route path='/admin/navBar' element={<AdminnavBar/>}/>
           <Route path='/admin/sidebar' element={<AdminSidebar/>}/>
         </Route>
+        
       </Routes>
       {/* </Router> */}
   
