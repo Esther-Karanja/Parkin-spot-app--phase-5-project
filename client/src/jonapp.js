@@ -1,8 +1,4 @@
-import React, { useRef } from 'react';
-import { Button, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useRef, useState } from 'react';
 import Map from './components/index';
 import BookItem from './components/BookItem';
 import CustomMarker from './components/CustomMarker';
@@ -10,6 +6,7 @@ import CustomMarker from './components/CustomMarker';
 export default function JonApp() {
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["30%"];
+  const [selectedParkingSpot, setSelectedParkingSpot] = useState(null);
 
   function handlePresentModal() {
     bottomSheetModalRef.current?.present();
@@ -34,39 +31,36 @@ export default function JonApp() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <div style={{ display: 'flex', flex: 1 }}>
       <Map style={styles.map} />
-      <BottomSheetModalProvider>
-        <View style={styles.buttonContainer}>
-          <Button title='Present Modal' onPress={handlePresentModal} />
-          <StatusBar style="auto" />
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={0}
-            snapPoints={snapPoints}
-            backgroundStyle={{ borderRadius: 50 }}
-          >
-            <View style={styles.contentContainer}>
-              <View style={styles.rowContainer}>
-                <Text style={styles.title}>Garden City Mall</Text>
-                <Text style={styles.priceTag}>Ksh 500</Text>
-              </View>
-              <Text>Add Tip</Text>
-              <TouchableOpacity onPress={handleBooking} style={styles.bookNowButton}>
-                <Text style={{ color: 'white' }}>BOOK NOW</Text>
-              </TouchableOpacity>
-            </View>
-          </BottomSheetModal>
-        </View>
-      </BottomSheetModalProvider>
+      <div style={styles.buttonContainer}>
+        <button onClick={handlePresentModal}>Present Modal</button>
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={0}
+          snapPoints={snapPoints}
+          backgroundStyle={{ borderRadius: 50 }}
+        >
+          <div style={styles.contentContainer}>
+            <div style={styles.rowContainer}>
+              <h2 style={styles.title}>Garden City Mall</h2>
+              <p style={styles.priceTag}>Ksh 500</p>
+            </div>
+            <p>Add Tip</p>
+            <button onClick={handleBooking} style={styles.bookNowButton}>
+              BOOK NOW
+            </button>
+          </div>
+        </BottomSheetModal>
+      </div>
       {/* Render BookItem and CustomMarker with sample booking data */}
       <BookItem booking={booking} />
       <CustomMarker booking={booking} />
-    </GestureHandlerRootView>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
   },
@@ -78,22 +72,23 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 15,
+    padding: 15,
     marginTop: 10,
   },
   rowContainer: {
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 10,
   },
   title: {
-    fontWeight: "900",
+    fontWeight: "bold",
     letterSpacing: 0.5,
     fontSize: 18,
   },
   priceTag: {
-    fontWeight: "900",
+    fontWeight: "bold",
     letterSpacing: 0.5,
     fontSize: 18,
   },
@@ -112,6 +107,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     bottom: 20,
-    alignSelf: 'center', // Center the button horizontally
+    alignSelf: 'center',
   },
-});
+};
