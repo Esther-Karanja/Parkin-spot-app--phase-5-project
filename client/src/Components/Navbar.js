@@ -70,7 +70,7 @@ const Navbar = () => {
                     <Link to='/sign-up'>Sign-Up</Link>
                 </li> */}
                 <li>
-                    <Link to='/admin-panel'>Admin Panel</Link>
+                    <Link to='/admin'>Admin Panel</Link>
                 </li>
             </ul>
         </div>

@@ -11,6 +11,7 @@ import random
 import math
 import requests
 import haversine as hs
+from decorators import admin_endpoint, client_endpoint
 
 JWT_SECRET = 'secret'
 
@@ -23,6 +24,8 @@ CORS(app)
 migrate = Migrate(app, db)
 
 db.init_app(app)
+
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -121,7 +124,7 @@ def reverse_geocoding(input_location):
         else:
             return make_response(jsonify({"message":"Enter valid location"}))
 
-
+@client_endpoint
 @app.route('/parking',methods=['GET'])
 def get_parkings():
     location = request.args.get('location')
@@ -164,48 +167,58 @@ def get_parkings():
             parking_spots.append(ps_dict)
 
         return make_response(jsonify(parking_spots), 200)
-    
+
+
+@admin_endpoint
 @app.route('/add-parking',methods=['POST'])
 def add_parking():
-    request_data = request.get_json()
+    try:
+        request_data = request.get_json()
 
-    rev_geocode_url = "https://nominatim.openstreetmap.org/search"
-    params = {
-            'q': request_data['location'],
-            'format': 'json',
-            'limit': 1
-        }
+        if 'location' not in request_data or 'type' not in request_data or 'capacity' not in request_data or 'pricing' not in request_data:
+            return make_response(jsonify({"message":"All fields are required"}),400)
 
-    response = requests.get(rev_geocode_url, params=params)
-    response_data = response.json()
 
-    loc_lat = None
-    loc_long = None
+        rev_geocode_url = "https://nominatim.openstreetmap.org/search"
+        params = {
+                'q': request_data['location'],
+                'format': 'json',
+                'limit': 1
+            }
 
-    if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
-        loc_lat = float(response_data[0]['lat'])
-        loc_long = float(response_data[0]['lon'])
-        if loc_lat and loc_long is not None:
-            restriction = request_data.get('restrictions') 
+        response = requests.get(rev_geocode_url, params=params)
+        response_data = response.json()
+        
+        loc_lat = None
+        loc_long = None
 
-            new_ps = ParkingSpot(
-                    location = request_data['location'],
-                    latitude = loc_lat,
-                    longitude = loc_long,
-                    type = request_data['type'],
-                    capacity = request_data['capacity'],
-                    pricing = request_data['pricing'],
-                    restrictions = restriction
-            )
+        if response_data and 'lat' in response_data[0] and 'lon' in response_data[0]:
+                loc_lat = float(response_data[0]['lat'])
+                loc_long = float(response_data[0]['lon'])
+                if loc_lat and loc_long is not None:
+                    restriction = request_data.get('restrictions') 
 
-            db.session.add(new_ps)
-            db.session.commit()
+                    new_ps = ParkingSpot(
+                            location = request_data['location'],
+                            latitude = loc_lat,
+                            longitude = loc_long,
+                            type = request_data['type'],
+                            capacity = request_data['capacity'],
+                            pricing = request_data['pricing'],
+                            restrictions = restriction
+                    )
 
-        return make_response(jsonify({"message":"Parking successfully created"}),201)
-    else:
-        return make_response(jsonify({"message":"Enter valid location"}))
-    
+                    db.session.add(new_ps)
+                    db.session.commit()
 
+                    return make_response(jsonify({"message":"Parking successfully created"}),201)
+        else:
+            return make_response(jsonify({"message":"Enter valid location"}))
+
+    except Exception as e:
+        return make_response(jsonify({"message": f"{e}"}),400)
+
+@admin_endpoint
 @app.route('/update-parking',methods=['PATCH'])
 def update_parking():
     location = request.args.get('location')
@@ -241,6 +254,7 @@ def update_parking():
 
     return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
 
+@admin_endpoint
 @app.route('/delete-parking',methods=['DELETE'])
 def delete_parking():
     location = request.args.get('location')
@@ -251,7 +265,7 @@ def delete_parking():
 
     return make_response(jsonify({"message":"Parking spot successfully deleted"}),200)
 
-
+@client_endpoint
 @app.route('/reviews',methods=['GET'])
 def read_reviews():
         reviews = []
@@ -269,7 +283,7 @@ def read_reviews():
             reviews.append(review_dict)
 
         return make_response(jsonify(reviews),200)
-
+@client_endpoint
 @app.route('/reviews/<string:location>')
 def filtered_reviews(location):
     parking_spot_location = ParkingSpot.query.filter_by(location=location).first()
@@ -291,7 +305,7 @@ def filtered_reviews(location):
     else:
         return make_response(jsonify({"message":"Parking spot has not been reviewed"}))
 
-
+@client_endpoint
 @app.route('/add-reviews',methods=['POST'])
 def add_reviews():
     data = request.get_json()
@@ -307,7 +321,7 @@ def add_reviews():
 
     return make_response(jsonify({"message":"Review successfully created"}),201)
 
-
+@admin_endpoint
 @app.route('/delete-review',methods=['DELETE'])
 def delete_review():
     review = request.args.get('review_id')
