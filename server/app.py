@@ -81,7 +81,7 @@ def login():
         return make_response(jsonify({"msg": "Invalid username or password", "status": "error"}), 401)
 
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
-    return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success"}), 200)
+    return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success", "role": user.role}), 200)
 
 def form_parking_dict(parking_resp):
     pricing = parking_resp.pricing
