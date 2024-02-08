@@ -1,13 +1,15 @@
-
-.container {
-    
+.div-container{
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+.cards-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 30px;
     flex-wrap: wrap;
-    float: left;
-    margin-left: 100px;
     width: 100%;
     height: 100vh;
     padding: 0 10px;
@@ -20,8 +22,8 @@
   
 .card {
     display: flex;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     margin: 10px;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -29,6 +31,8 @@
     padding: 16px;
     text-align: center;
     background-color: #f1f1f1;
+    overflow: hidden;
+    z-index: -1;
 }
 
 .card-content{
@@ -46,33 +50,26 @@
     margin-top: 10px;
 }
 
-.search-wrapper{
-    display: flex;
-    flex-direction: column;
-}
 
 .search-bar {
-    width: 30%;
-    float: left;
-    margin-left: 350px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 5 rem;
+    display: block;
+    clear: both;
+    margin: 20px;
+    width: 60%;
 }
 
-#search-icon{
-    align-items: center;
+#outlined-basic{
+    
+    z-index: -1;
 }
 
 .btn{
     float: right;
-    padding: 10px;
     margin-top: 20px;
-    margin-right: 300px;
     background: #f1f1f1;
     transition: 0.2s;
     border-radius: 10px;
+    border-color: black;
     font-family: "Roboto",sans-serif;
     font-size: 18px;
     font-weight: bold;
@@ -81,6 +78,7 @@
     width: 160px;
     text-transform: uppercase;
     cursor: pointer;
+    box-sizing:border-box;
     box-shadow: grey;
 }
 
@@ -116,6 +114,14 @@
     font-size: 20px;
 }
 
+.pop-up-btn{
+    width: 30px;
+    background: #ecdede;
+    border-radius: 0.5rem;
+    top: 8px;
+    right: 8px;
+}
+
 .submit-btn {
     padding: 20px;
     margin: 10px;
@@ -131,4 +137,35 @@
     text-transform: uppercase;
     cursor: pointer;
     box-shadow: #282c34;
+}
+
+@media screen and (max-width: 600px){
+    .cards-container {
+        display: flex;
+        float: left;
+        width: 100%;
+        height: 100vh;
+        padding: 0 10px;
+        padding: 0 10px;
+        overflow: hidden;
+        border-radius: 1 rem;
+        flex-direction: column;
+        margin : 0.5rem;
+        height: fit-content;
+    }
+
+    .pop-up-container{
+        align-items: centre;
+        justify-content: center;
+        position: fixed;
+        margin-top: 70px;
+        margin-bottom: 120px;
+        margin-left: 13px;
+        width: 90%;
+        height: 87vh;
+        background-color: rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

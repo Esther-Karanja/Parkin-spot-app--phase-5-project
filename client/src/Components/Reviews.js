@@ -1,27 +1,26 @@
 import {useState, useEffect, React} from 'react'
 import TextField from "@mui/material/TextField";
-import {FaSearch} from "react-icons/fa"
 import '../reviews.css'
 import Review from './Review';
 import ReviewForm from './ReviewForm';
-
-//import ReviewsList from './ReviewsList'
 
 const Reviews = () => {
   const [reviewsData, setReviewsData] = useState([])
   const [searchInput, setSearchInput] = useState("");
   const [formPopup, setFormPopup] = useState(false)
 
-    const handleNewreview = (newReview) => {
-        setReviewsData([...reviewsData,newReview])
-    }
+
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/reviews")
     .then((response) => response.json())
     .then((fetchData) => setReviewsData(fetchData))
     .catch((error) => {console.error('Fetch error:',error)})
-  },[])
+  },[reviewsData])
+
+  const handleNewreview = (newReview) => {
+    setReviewsData([...reviewsData,newReview])
+  }
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -39,7 +38,7 @@ const Reviews = () => {
   
   
   return (
-    <div className='search-warpper'>
+    <div className='div-container'>
       <div className='search-bar'>
         <TextField
             id="outlined-basic"
@@ -48,13 +47,10 @@ const Reviews = () => {
             label="Search"
             onChange={handleChange}
         />
-        <FaSearch id="search-icon"/>
-      </div>
-      <div>
         <button className='btn' onClick={() => setFormPopup(true)}>Add review</button>
-        <ReviewForm trigger={formPopup} setTrigger={setFormPopup} onAddReview={handleNewreview}/>
       </div>
-      <div className='container'>
+      <ReviewForm trigger={formPopup} setTrigger={setFormPopup} onAddReview={handleNewreview} setFormPopup={setFormPopup}/>
+      <div className='cards-container'>
         {reviewsData.map((review) => (
           <Review key={review.id} review={review} />
         ))}
