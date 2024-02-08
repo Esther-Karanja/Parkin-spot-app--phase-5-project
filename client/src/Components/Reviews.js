@@ -34,9 +34,8 @@ const Reviews = () => {
       setReviewsData(reviewsToDisplay)})
     .catch((error) => {console.error('Fetch error:',error)})
   }
+  
 
-  
-  
   return (
     <div className='div-container'>
       <div className='search-bar'>

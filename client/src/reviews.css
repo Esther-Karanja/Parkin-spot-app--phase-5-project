@@ -58,11 +58,6 @@
     width: 60%;
 }
 
-#outlined-basic{
-    
-    z-index: -1;
-}
-
 .btn{
     float: right;
     margin-top: 20px;
@@ -138,6 +133,32 @@
     cursor: pointer;
     box-shadow: #282c34;
 }
+
+.locations-dropdown{
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  padding: 6px;
+  margin: 12px 0;
+  width: 584px;
+  border-radius: 12px;
+  overflow: auto;
+  outline: 0px;
+}
+
+.base-Select-root{
+    display: block;
+    width: 97%;
+    padding: 10px;
+    background-color: white;
+    border:2px solid #eee;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    border-radius: 10px;
+    font-family:inherit;
+    font-size: 20px;
+    overflow: auto;
+}
+
+
 
 @media screen and (max-width: 600px){
     .cards-container {
