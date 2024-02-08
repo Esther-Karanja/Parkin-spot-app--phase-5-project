@@ -81,7 +81,32 @@ def login():
         return make_response(jsonify({"msg": "Invalid username or password", "status": "error"}), 401)
 
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
-    return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success"}), 200)
+    return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success", "role": user.role}), 200)
+
+@app.route('/users')
+def get_users():
+
+    users = []
+    for user in User.query.all():
+        user_dict = {
+            "id": user.id,
+            "firstname": user.firstname,
+            "surname" : user.surname,
+            "email" : user.email,
+            "password": user.password,
+            "_is_activated": user._is_activated,
+            "phone": user.phone,
+            "role": user.role,
+            }
+        users.append(user_dict)
+
+    response = make_response(
+        jsonify(users),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
 
 def form_parking_dict(parking_resp):
     pricing = parking_resp.pricing
@@ -124,9 +149,9 @@ def reverse_geocoding(input_location):
         else:
             return make_response(jsonify({"message":"Enter valid location"}))
 
-
-@app.route('/parking',methods=['GET'])
 @client_endpoint
+@app.route('/parking',methods=['GET'])
+
 def get_parkings():
     location = request.args.get('location')
     
@@ -170,9 +195,8 @@ def get_parkings():
         return make_response(jsonify(parking_spots), 200)
 
 
-
+#@admin_endpoint
 @app.route('/add-parking',methods=['POST'])
-@admin_endpoint  
 def add_parking():
     try:
         request_data = request.get_json()
@@ -214,15 +238,14 @@ def add_parking():
                     db.session.commit()
 
                     return make_response(jsonify({"message":"Parking successfully created"}),201)
-         else:
+        else:
             return make_response(jsonify({"message":"Enter valid location"}))
 
     except Exception as e:
         return make_response(jsonify({"message": f"{e}"}),400)
 
-
+#@admin_endpoint
 @app.route('/update-parking',methods=['PATCH'])
-@admin_endpoint
 def update_parking():
     location = request.args.get('location')
     parking_spot = ParkingSpot.query.filter_by(location=location).first()
@@ -257,9 +280,8 @@ def update_parking():
 
     return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
 
-
+#@admin_endpoint
 @app.route('/delete-parking',methods=['DELETE'])
-@admin_endpoint
 def delete_parking():
     location = request.args.get('location')
     parking_spot = ParkingSpot.query.filter_by(location=location).first()
@@ -269,18 +291,16 @@ def delete_parking():
 
     return make_response(jsonify({"message":"Parking spot successfully deleted"}),200)
 
-
+#@client_endpoint
 @app.route('/reviews',methods=['GET'])
 def read_reviews():
         reviews = []
         for parking_review in Review.query.all():
-            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
-            user = User.query.filter_by(id=parking_review.user_id).first()
             review_dict = {
                 "review": parking_review.review,
-                "location" : parking_spot.location,
-                "user_firstname": user.firstname,
-                "user_surname": user.surname,
+                "location" : parking_review.location,
+                "user_firstname": parking_review.user_firstname,
+                "user_surname": parking_review.user_surname,
                 "time": parking_review.time,
             }
                 
@@ -288,6 +308,7 @@ def read_reviews():
 
         return make_response(jsonify(reviews),200)
 
+#@client_endpoint
 @app.route('/reviews/<string:location>')
 def filtered_reviews(location):
     parking_spot_location = ParkingSpot.query.filter_by(location=location).first()
@@ -295,13 +316,11 @@ def filtered_reviews(location):
     if parking_spot_reviews is not None:
         parkingspot_reviews = []
         for parking_review in parking_spot_reviews:
-            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
-            user = User.query.filter_by(id=parking_review.user_id).first()
             review_dict = {
                 "review": parking_review.review,
-                "location" : parking_spot.location,
-                "user_firstname": user.firstname,
-                "user_surname": user.surname,
+                "location" : parking_review.location,
+                "user_firstname": parking_review.user_firstname,
+                "user_surname": parking_review.user_surname,
                 "time": parking_review.time,
             }
             parkingspot_reviews.append(review_dict)
@@ -309,15 +328,15 @@ def filtered_reviews(location):
     else:
         return make_response(jsonify({"message":"Parking spot has not been reviewed"}))
 
-
+#@client_endpoint
 @app.route('/add-reviews',methods=['POST'])
 def add_reviews():
     data = request.get_json()
-
     new_review = Review(
-        review = data['review'],
-        location_id = data['location_id'],
-        user_id = data['user_id']
+        user_firstname = data['firstname'],
+        user_surname = data['surname'],
+        location=data['location'],
+        review = data['review']
     )
 
     db.session.add(new_review)
@@ -325,7 +344,7 @@ def add_reviews():
 
     return make_response(jsonify({"message":"Review successfully created"}),201)
 
-
+#@admin_endpoint
 @app.route('/delete-review',methods=['DELETE'])
 def delete_review():
     review = request.args.get('review_id')
