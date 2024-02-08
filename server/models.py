@@ -21,7 +21,7 @@ class User(db.Model):
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<Users {self.email}>'
     
 class ParkingSpot(db.Model):
     __tablename__ = 'parking_spots'
