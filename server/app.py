@@ -306,16 +306,11 @@ def filtered_reviews(location):
 @app.route('/add-reviews',methods=['POST'])
 def add_reviews():
     data = request.get_json()
-    
-    location_id = ParkingSpot.query.filter_by(location=data['location']).first()
-    user_id = User.query.filter_by(firstname=data['firstname']).first()
     new_review = Review(
         user_firstname = data['firstname'],
         user_surname = data['surname'],
         location=data['location'],
-        review = data['review'],
-        location_id = location_id.id,
-        user_id = user_id
+        review = data['review']
     )
 
     db.session.add(new_review)
