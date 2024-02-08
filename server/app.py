@@ -270,44 +270,17 @@ def delete_parking():
 def read_reviews():
         reviews = []
         for parking_review in Review.query.all():
-            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
-            user = User.query.filter_by(id=parking_review.user_id).first()
             review_dict = {
                 "review": parking_review.review,
-                "location" : parking_spot.location,
-                "user_firstname": user.firstname,
-                "user_surname": user.surname,
+                "location" : parking_review.location,
+                "user_firstname": parking_review.user_firstname,
+                "user_surname": parking_review.user_surname,
                 "time": parking_review.time,
             }
                 
             reviews.append(review_dict)
 
         return make_response(jsonify(reviews),200)
-
-@app.route('/update-review',methods=['PATCH'])
-def update_review():
-    id = request.args.get('id')
-    parking_spot = Review.query.filter_by(id=id).first()
-
-    if not parking_spot:
-        return make_response(jsonify({"message":"Review does not exist"}),404)
-    
-    data = request.get_json()
-
-    if 'location' in data:
-        parking_spot.location = data['location']
-
-    if 'user_firstname' in data:
-        parking_spot.type = data['user_firstname']
-
-    if 'user_surname' in data:
-        parking_spot.capacity = data['user_surname']
-
-
-
-    db.session.commit()
-
-    return make_response(jsonify({"message": "Review successfully updated"}), 200)
 
 #@client_endpoint
 @app.route('/reviews/<string:location>')
@@ -317,13 +290,11 @@ def filtered_reviews(location):
     if parking_spot_reviews is not None:
         parkingspot_reviews = []
         for parking_review in parking_spot_reviews:
-            parking_spot = ParkingSpot.query.filter_by(id=parking_review.location_id).first()
-            user = User.query.filter_by(id=parking_review.user_id).first()
             review_dict = {
                 "review": parking_review.review,
-                "location" : parking_spot.location,
-                "user_firstname": user.firstname,
-                "user_surname": user.surname,
+                "location" : parking_review.location,
+                "user_firstname": parking_review.user_firstname,
+                "user_surname": parking_review.user_surname,
                 "time": parking_review.time,
             }
             parkingspot_reviews.append(review_dict)
