@@ -1,7 +1,8 @@
 import './styles.css'
 import Home from './Components/Home';
 import { Route, Routes } from 'react-router-dom';
-import SignupLogin from './Components/SignupLogin';
+import Signup from './Components/Signup';
+import Login from './Components/Login';
 import Navbar from './Components/Navbar';
 // import SignUp from './Components/SignUp';
 import HowItWorks from './Components/HowItWorks';
@@ -22,7 +23,9 @@ function App() {
         <Route path="/how-it-works" element={<HowItWorks/>}/>
         <Route path="/reviews" element={<Reviews/>}/>
         {/* <Route path="/sign-up" element={<SignUp/>}/> */}
-        <Route path="/signuplogin" element={<SignupLogin/>}/>
+        <Route path="/signup" element={<Signup/>}/>
+        <Route path="/login" element={<Login/>}/>
+
         <Route path="/admin" element={<AdminPanel/>}>
           <Route path='/admin/login' element={<Adminlogin/>}/> 
           <Route path='/admin/navBar' element={<AdminnavBar/>}/>
