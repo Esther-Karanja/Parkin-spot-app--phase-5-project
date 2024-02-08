@@ -16,7 +16,7 @@ with app.app_context():
     user1 = User(
         firstname = "Alex",
         surname = "Albon",
-        email = "alexalbon@f1.com",
+        email = "alexalbon@gmail.com",
         password = "alexalbon",
         _is_activated = False,
         phone = "011345676"
@@ -24,32 +24,32 @@ with app.app_context():
     user2 = User(
         firstname = "Kevin",
         surname = "Magnussen",
-        email = "kevinmagnussen@f1.com",
+        email = "kevinmagnussen@gmail.com",
         password = "kevinmagnussen",
         _is_activated = False,
         phone = "0789304689"
     )
     user3 = User(
         firstname = "Charles",
-        surname = "Leclerc",
-        email = "charlesleclerc@f1.com",
-        password = "charlesleclerc",
+        surname = "Kiprop",
+        email = "charleslkiprop@gmail.com",
+        password = "charleskiprop",
         _is_activated = False,
         phone = "1917846506"
     )
     user4 = User(
         firstname = "Lewis",
-        surname = "Hamilton",
-        email = "lewishamilton@f1.com",
-        password = "lewishamilton",
+        surname = "Oduor",
+        email = "lewisoduor@gmail.com",
+        password = "lewisoduor",
         _is_activated = False,
         phone = "09432740"
     )
     user5 = User(
-        firstname = "Fernando",
-        surname = "Alonso",
-        email = "fernandoalonso@f1.com",
-        password = "fernandoalonso",
+        firstname = "Millicent",
+        surname = "Wangechi",
+        email = "millicentwangechi@gmail.com",
+        password = "millicentwangechi",
         _is_activated = False,
         phone = "243789456"
     )

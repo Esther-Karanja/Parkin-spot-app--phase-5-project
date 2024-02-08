@@ -45,6 +45,9 @@ class Review(db.Model):
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_firstname = db.Column(db.String, nullable=False)
+    user_surname=db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=False)
     review = db.Column(db.String,nullable=False)
     time = db.Column(db.DateTime, default=datetime.utcnow) 
     location_id = db.Column(db.Integer,db.ForeignKey('parking_spots.id'))

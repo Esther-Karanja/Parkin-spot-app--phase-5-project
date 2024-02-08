@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "latitude": -1.2285,
+    "longitude": 36.8820,
+    "price": 1000,
+    "title": "Garden City Mall",
+    "numberOfStars": 4,
+    "rating": 4.5,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 2,
+    "latitude": -1.2855,
+    "longitude": 36.8219,
+    "price": 850,
+    "title": "Sarit Centre",
+    "numberOfStars": 3,
+    "rating": 3.8,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 3,
+    "latitude": -1.2921,
+    "longitude": 36.8210,
+    "price": 1200,
+    "title": "Westgate Shopping Mall",
+    "numberOfStars": 5,
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 4,
+    "latitude": -1.2867,
+    "longitude": 36.8214,
+    "price": 950,
+    "title": "Prestige Plaza",
+    "numberOfStars": 4,
+    "rating": 4.2,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 5,
+    "latitude": -1.2833,
+    "longitude": 36.8202,
+    "price": 1150,
+    "title": "Yaya Centre",
+    "numberOfStars": 4,
+    "rating": 4.3,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    "id": 6,
+    "latitude": -1.2875,
+    "longitude": 36.8218,
+    "price": 800,
+    "title": "The Junction Mall",
+    "numberOfStars": 3,
+    "rating": 3.7,
+    "image": "https://images.unsplash.com/photo-1540066019607-e5f69323a8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGF1ZGl8ZW58MHx8MHx8fDA%3D"
+  }
+]
