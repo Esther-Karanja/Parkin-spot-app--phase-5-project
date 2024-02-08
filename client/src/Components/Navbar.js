@@ -45,6 +45,10 @@ const Navbar = () => {
             text: "Admin Panel",
             icon: <AdminPanelIcon/>
         },
+        {
+            text: "Booking",  // Add a new menu option for the booking page
+            icon: null // No specific icon for booking
+        },
     ]
 
   return (
@@ -69,6 +73,9 @@ const Navbar = () => {
                 {/* <li>
                     <Link to='/sign-up'>Sign-Up</Link>
                 </li> */}
+                 { <li>
+                    <Link to='/Booking'>Where to?</Link>
+                </li> }
                 <li>
                     <Link to='/admin'>Admin Panel</Link>
                 </li>
