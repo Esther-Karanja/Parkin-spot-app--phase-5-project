@@ -1,8 +1,12 @@
+// index.jsx
 import React, { useState } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import bookings from '../assets/data/bookings.json';
-import CustomMarker from './CustomMarker';
-import BookItem from './BookItem';
+import CustomMarker from './Customarker';
+import BookItem from './bookItem';
+
+// Import the API key
+import { GOOGLE_MAPS_API_KEY } from '../Components/config';
 
 const INITIAL_CENTER = {
   lat: -1.2921,
@@ -18,6 +22,8 @@ const Map = () => {
         mapContainerStyle={styles.map}
         zoom={15}
         center={INITIAL_CENTER}
+        // Provide your API key to the GoogleMap component
+        apiKey={GOOGLE_MAPS_API_KEY}
       >
         {bookings.map((booking) => (
           <CustomMarker
