@@ -18,7 +18,11 @@ import AdminPanelIcon from "@mui/icons-material/AdminPanelSettings"
 import { Link } from 'react-router-dom';
 
 
+
 const Navbar = () => {
+    const [role, setRole] = useState(localStorage.getItem('role'))
+    console.log (role)
+
     const [openMenu, setOpenMenu] = useState(false)
     const menuOptions =[
         {
@@ -41,7 +45,9 @@ const Navbar = () => {
             text: "Sign Up",
             icon: <AppRegistrationIcon/>
         },
-        {
+        
+        
+            role === "admin" &&{
             text: "Admin Panel",
             icon: <AdminPanelIcon/>
         },
@@ -64,13 +70,14 @@ const Navbar = () => {
                     <Link to='/reviews'>Reviews</Link>
                 </li>
                 <li>
-                    <Link to='/signuplogin'>Login</Link>
+                    <Link to='/signup'>Sign-Up</Link>
                 </li>
-                {/* <li>
-                    <Link to='/sign-up'>Sign-Up</Link>
-                </li> */}
+
                 <li>
-                    <Link to='/admin-panel'>Admin Panel</Link>
+                    <Link to='/login'>Login</Link>
+                </li>
+                <li>
+                    {role === "admin" &&<Link to='/admin'>Admin Panel</Link>}
                 </li>
             </ul>
         </div>
