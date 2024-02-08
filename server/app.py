@@ -83,6 +83,31 @@ def login():
     token = jwt.encode({'user_id': user.id}, JWT_SECRET, algorithm='HS256')
     return make_response(jsonify({"msg": "Login successful", "token": token, "status": "success"}), 200)
 
+@app.route('/users')
+def get_users():
+
+    users = []
+    for user in User.query.all():
+        user_dict = {
+            "id": user.id,
+            "firstname": user.firstname,
+            "surname" : user.surname,
+            "email" : user.email,
+            "password": user.password,
+            "_is_activated": user._is_activated,
+            "phone": user.phone,
+            "role": user.role,
+            }
+        users.append(user_dict)
+
+    response = make_response(
+        jsonify(users),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
+
 def form_parking_dict(parking_resp):
     pricing = parking_resp.pricing
     ps_dict = {
@@ -126,7 +151,7 @@ def reverse_geocoding(input_location):
 
 
 @app.route('/parking',methods=['GET'])
-@client_endpoint
+# @client_endpoint
 def get_parkings():
     location = request.args.get('location')
     
@@ -214,7 +239,7 @@ def add_parking():
                     db.session.commit()
 
                     return make_response(jsonify({"message":"Parking successfully created"}),201)
-         else:
+        else:
             return make_response(jsonify({"message":"Enter valid location"}))
 
     except Exception as e:
