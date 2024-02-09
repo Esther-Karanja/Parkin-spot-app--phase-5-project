@@ -306,6 +306,10 @@ def filtered_reviews(location):
 @app.route('/add-reviews',methods=['POST'])
 def add_reviews():
     data = request.get_json()
+    required_fields = ['firstname', 'surname', 'location', 'review']
+    if not all(field in data for field in required_fields):
+        return make_response(jsonify({"msg": F"{required_fields}", "status": "error"}))
+    
     new_review = Review(
         user_firstname = data['firstname'],
         user_surname = data['surname'],
@@ -316,7 +320,7 @@ def add_reviews():
     db.session.add(new_review)
     db.session.commit()
 
-    return make_response(jsonify({"message":"Review successfully created"}),201)
+    return make_response(jsonify({"message":"Review successfully created","status": "success"}),201)
 
 #@admin_endpoint
 @app.route('/delete-review',methods=['DELETE'])

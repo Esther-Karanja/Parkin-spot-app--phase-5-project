@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Dropdown from './Dropdown';
 //mport {v4 as uuid} from 'uuid';
 
-function ReviewForm({trigger, setTrigger, onAddReview, setFormPopup}) {
+function ReviewForm({trigger, setTrigger, setFormPopup}) {
 
     const [firstName,setFirstName] = useState("")
     const [surname,setSurname] = useState("")
@@ -26,7 +26,16 @@ function ReviewForm({trigger, setTrigger, onAddReview, setFormPopup}) {
             body: JSON.stringify(formData),
         })
         .then((r) => r.json)
-        .then((newReview) => onAddReview(newReview))
+        .then(() => {
+
+          setTimeout(() => {
+            setFirstName('')
+            setSurname('')
+            setNewReview('')
+            setLocation('')
+            setFormPopup(false)
+          }, 2000)
+        })
     }
 
     

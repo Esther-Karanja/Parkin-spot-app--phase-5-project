@@ -52,15 +52,22 @@
 
 
 .search-bar {
-    display: block;
-    clear: both;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
     margin: 20px;
     width: 60%;
 }
 
+.search-icon{
+    margin-top: 27px;
+    margin-left: 180px;
+}
+
 .btn{
     float: right;
-    margin-top: 20px;
+    margin-top: 17px;
+    margin-right: 35px;
     background: #f1f1f1;
     transition: 0.2s;
     border-radius: 10px;
@@ -188,5 +195,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .search-bar{
+        
     }
 }

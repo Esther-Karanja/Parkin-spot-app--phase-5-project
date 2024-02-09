@@ -1,12 +1,12 @@
 import React,{ useState} from 'react';
 import PropTypes from 'prop-types';
 import { Select as BaseSelect} from '@mui/base/Select';
-import { Option as BaseOption} from '@mui/base/Option';
+import { Option} from '@mui/base/Option';
 import { styled } from '@mui/system';
 import '../reviews.css'
 
 export default function Dropdown({setLocation, locationOptions}) {
-    const [value, setValue] = useState(10);
+    const [value, setValue] = useState("");
 
     const handleSelect = (newValue) => {
         setValue(newValue) 
@@ -36,11 +36,6 @@ export default function Dropdown({setLocation, locationOptions}) {
   }
   
   Select.propTypes = {
-    /**
-     * The components used for each slot inside the Select.
-     * Either a string to use a HTML element or a component.
-     * @default {}
-     */
     slots: PropTypes.shape({
       listbox: PropTypes.elementType,
       popup: PropTypes.elementType,
@@ -60,18 +55,5 @@ export default function Dropdown({setLocation, locationOptions}) {
     overflow: auto;
     outline: 0px;
     background: white;
-    `,
-);
-
-const Option = styled(BaseOption)(
-    ({ theme }) => `
-    list-style: none;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: default;
-  
-    &:last-of-type {
-      border-bottom: none;
-    }
     `,
 );
