@@ -17,6 +17,7 @@ import AdminSidebar from './Components/AdminSidebar';
 import TryAutocomplete from './Components/TryAutocomplete'; // Import the TryAutocomplete component
 import BookingForm from './Components/BookingForm';
 import  AutomaticBookingForm from  './Components/Automatic';
+     
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path='/admin/sidebar' element={<AdminSidebar/>}/>
         </Route>
 
+        
         
 
         <Route path="/admin" element={<AdminPanel />}>
