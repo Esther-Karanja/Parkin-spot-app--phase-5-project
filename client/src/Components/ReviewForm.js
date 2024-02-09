@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import Dropdown from './Dropdown';
 //mport {v4 as uuid} from 'uuid';
 
-function ReviewForm({trigger, setTrigger, onAddReview, setFormPopup}) {
+function ReviewForm({trigger, setTrigger, setFormPopup}) {
 
     const [firstName,setFirstName] = useState("")
     const [surname,setSurname] = useState("")
     const [review,setNewReview] = useState("")
     const [location,setLocation] = useState("")
+    const [locationOptions,setLocationOptions] = useState("")
 
     const handleSubmit = (event) =>{
         event.preventDefault()
@@ -24,8 +26,24 @@ function ReviewForm({trigger, setTrigger, onAddReview, setFormPopup}) {
             body: JSON.stringify(formData),
         })
         .then((r) => r.json)
-        .then((newReview) => onAddReview(newReview))
+        .then(() => {
+
+          setTimeout(() => {
+            setFirstName('')
+            setSurname('')
+            setNewReview('')
+            setLocation('')
+            setFormPopup(false)
+          }, 2000)
+        })
     }
+
+    
+    useEffect(() => {
+      fetch("http://localhost:5000/parking")
+      .then((r) => r.json())
+      .then((parkings) => setLocationOptions(parkings))
+  },[])
 
     return (trigger) ? (
         <div onClick={() => setFormPopup(false)} className='pop-up-container'>
@@ -49,10 +67,11 @@ function ReviewForm({trigger, setTrigger, onAddReview, setFormPopup}) {
                 name="Surname" 
                 value={surname} 
                 onChange={(e) => setSurname(e.target.value)}/>
+
                 
                 <label htmlFor="location">Location:</label>
-                <textarea id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)}/>
-
+                {/* <textarea id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)}/> */}
+                <Dropdown setLocation={setLocation} locationOptions={locationOptions}/>
                 <label htmlFor="message">Review:</label>
                 <textarea 
                 id="review" 
