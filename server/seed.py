@@ -45,20 +45,9 @@ with app.app_context():
         _is_activated = False,
         phone = "09432740"
     )
-    user5 = User(
-        firstname = "Millicent",
-        surname = "Wangechi",
-        email = "millicentwangechi@gmail.com",
-        password = "millicentwangechi",
-        _is_activated = False,
-        phone = "243789456"
-    )
+    C"""
 
-    users = [user1,user2,user3,user4,user5]
-    db.session.add_all(users)
-    db.session.commit()"""
-
-    review1 = Review(
+    """review1 = Review(
         review = "Kibera Parking",
         location = "Very spacious",
         user_firstname = "Kevin",
@@ -127,4 +116,17 @@ with app.app_context():
 
     reviews = [review1, review2, review3, review4, review5, review6, review7, review8, review9, review10, review11]
     db.session.add_all(reviews)
+    db.session.commit()"""
+
+    admin_user = User(
+        firstname = "Feni",
+        surname = "Akoth",
+        email = "admin@f1.com",
+        password = "admin",
+        _is_activated = False,
+        phone = "243789456",
+        role="admin"
+    )
+
+    db.session.add(admin_user)
     db.session.commit()
