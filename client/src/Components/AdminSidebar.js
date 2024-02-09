@@ -16,18 +16,19 @@ const AdminSidebar = () => {
   return (
     <div className='sidebar'>
         <div className='top'>
+        <Link to='/admin'>
             <span className='admin-logo'>Admin</span>
+        </Link>
         </div>
         <hr/>
         <div className='center'>
             <ul>
                <p className='title'>MAIN</p>
-                <Link to='/admin'>
                 <li>
                     <DashboardCustomizeIcon className='icons'/>
                     <span>Dashboard</span>
                 </li>
-                </Link>
+                
                 <p className='title'>LISTS</p>
                 <Link to='/admin/user'>
                  <li>
@@ -68,10 +69,12 @@ const AdminSidebar = () => {
                     <AccountBoxIcon className='icons'/>
                     <span>Profile</span>
                 </li>
+                <Link to='/'>
                 <li>
                     <LogoutIcon className='icons'/>
                     <span>Logout</span>
                 </li>
+                </Link>
             </ul>
         </div>
         <p className='title'>USER MODE</p>
