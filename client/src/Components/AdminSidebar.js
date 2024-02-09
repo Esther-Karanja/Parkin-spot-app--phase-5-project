@@ -21,24 +21,33 @@ const AdminSidebar = () => {
         <hr/>
         <div className='center'>
             <ul>
-                <p className='title'>MAIN</p>
+               <p className='title'>MAIN</p>
+                <Link to='/admin'>
                 <li>
                     <DashboardCustomizeIcon className='icons'/>
                     <span>Dashboard</span>
                 </li>
+                </Link>
                 <p className='title'>LISTS</p>
                 <Link to='/admin/user'>
+                 <li>
                     <PersonIcon className='icons'/>
                     <span>Users</span>
+                </li>
                 </Link>
+                
                 <Link to='/admin/parkingspots'>
+                 <li>
                     <DirectionsCarIcon className='icons'/>
                     <span>Parking Spots</span>
+                 </li>
                 </Link>
                     
                 <Link to='/admin/reviews'>
+                <li>
                     <ReviewsIcon className='icons'/>
                     <span>Reviews</span>
+                </li>   
                 </Link>
                 <p className='title'>USEFUL LINKS</p>
                 <li>
