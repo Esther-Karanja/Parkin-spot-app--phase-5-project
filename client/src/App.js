@@ -12,6 +12,7 @@ import AdminSidebar from './Components/AdminSidebar';
 import TryAutocomplete from './Components/TryAutocomplete'; // Import the TryAutocomplete component
 import BookingForm from './Components/BookingForm';
 import  AutomaticBookingForm from  './Components/Automatic';
+     
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path= "/try-autocomplete"element={< TryAutocomplete/>} /> {/* Change Map to BookingPage if you have one */}
         <Route path= "/Booking"element={< BookingForm/>} />
         <Route path= "/AutomaticBookingForm"element={<AutomaticBookingForm />} />
+        
         
 
         <Route path="/admin" element={<AdminPanel />}>
