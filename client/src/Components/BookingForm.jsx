@@ -1,18 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const BookingForm = () => {
+  const [parkingSpots, setParkingSpots] = useState([]);
+
   useEffect(() => {
-    const initAutocomplete = () => {
-      // Your initialization code for Google Maps API
+    const fetchParkingSpots = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/parking'); // Adjust the URL accordingly
+        setParkingSpots(response.data);
+      } catch (error) {
+        console.error('Error fetching parking spots:', error);
+      }
     };
 
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete`;
-    script.async = true;
-    document.body.appendChild(script);
+    fetchParkingSpots();
 
     return () => {
-      // Clean up code if needed
+      // Cleanup function if needed
     };
   }, []);
 
@@ -20,11 +25,11 @@ const BookingForm = () => {
     <html>
       <head>
         <title>Booking Parking space</title>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossOrigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
       </head>
       <body>
         <style>
@@ -64,19 +69,16 @@ const BookingForm = () => {
               </div>
               <button id="submit" type="submit" className="btn btn-primary">Submit</button>
             </div>
-            <div className="form-horizontal col-sm-4">
-              <div className="form-group">
-                <b><label htmlFor="to-input">Time</label></b>
-                <label id="value-distance" className="form-text">Describe your duration of your stay</label>
-              </div>
-              <div className="form-group">
-                <b><label htmlFor="to-input">Price per Hour</label></b>
-                <label id="price" className="form-text">250 ksh</label>
-              </div>
-              <div className="form-group">
-                <b><label htmlFor="to-input">Total Price</label></b>
-                <label id="value-price" className="form-text">Press on submit button to book a parking spot </label>
-              </div>
+            <div className="form-horizontal col-sm-4"></div>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-sm-8">
+              <h2 className="text-center">Available Parking Spots</h2>
+              <ul>
+                {parkingSpots.map((spot, index) => (
+                  <li key={index}>{spot.name} - {spot.location}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
