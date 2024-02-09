@@ -12,7 +12,7 @@ import HowItWorks from './Components/HowItWorks';
 import Reviews from './Components/Reviews';
 import AdminPanel from './Components/AdminPanel';
 import AdminUsers from './Components/AdminUsers';
-import AdminReviews from '/Components/AdminReviews';
+import AdminReviews from './Components/AdminReviews';
 import AdminParkingSpots from './Components/AdminParkingSpots';
 import AdminSidebar from './Components/AdminSidebar';
 import TryAutocomplete from './Components/TryAutocomplete'; // Import the TryAutocomplete component
@@ -42,18 +42,12 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/login" element={<Login/>}/>
 
-        <Route path="/admin" element={<AdminPanel/>}>
-          <Route path='/admin/user' element={AdminUsers/>}/> 
-          <Route path='/admin/parkingspots' element={<AdminParkingSpots/>}/>
-          <Route path='/admin/reviews' element={<AdminReviews/>}/>
+        <Route path="/admin">
+          <Route index element={<AdminPanel/>}>
+          <Route path="user" element={AdminUsers/>}/> 
+          <Route path="parkingspots" element={<AdminParkingSpots/>}/>
+          <Route path="reviews" element={<AdminReviews/>}/>
         </Route>
-
-        // <Route path="/admin" element={<AdminPanel />}>
-        //   <Route path='/admin/login' element={<Adminlogin />} />
-        //   <Route path='/admin/navBar' element={<AdminnavBar />} />
-        //   <Route path='/admin/sidebar' element={<AdminSidebar />} />
-        // </Route>
-      </Routes>
     </div>
   );
 }
