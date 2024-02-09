@@ -10,6 +10,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { Link } from 'react-router-dom';
 
 const AdminSidebar = () => {
   return (
@@ -26,18 +27,19 @@ const AdminSidebar = () => {
                     <span>Dashboard</span>
                 </li>
                 <p className='title'>LISTS</p>
-                <li>
+                <Link to='/admin/user'>
                     <PersonIcon className='icons'/>
                     <span>Users</span>
-                </li>
-                <li>
+                </Link>
+                <Link to='/admin/parkingspots'>
                     <DirectionsCarIcon className='icons'/>
                     <span>Parking Spots</span>
-                </li>
-                <li>
+                </Link>
+                    
+                <Link to='/admin/reviews'>
                     <ReviewsIcon className='icons'/>
                     <span>Reviews</span>
-                </li>
+                </Link>
                 <p className='title'>USEFUL LINKS</p>
                 <li>
                     <NotificationsNoneIcon className='icons'/>
