@@ -33,7 +33,7 @@ function App() {
           <Route index element={<AdminPanel/>}/>
           <Route path="user" element={<AdminUsers/>}/> 
           <Route path="parkingspots" element={<AdminParkingSpots/>}/>
-          <Route path="reviews" element={<AdminReviews/>}/>
+          {/* <Route path="reviews" element={<AdminReviews/>}/> */}
         </Route>
       </Routes>
     </div>

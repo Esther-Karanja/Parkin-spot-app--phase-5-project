@@ -44,12 +44,12 @@ const AdminSidebar = () => {
                  </li>
                 </Link>
                     
-                <Link to='/admin/reviews'>
+                {/* <Link to='/admin/reviews'>
                 <li>
                     <ReviewsIcon className='icons'/>
                     <span>Reviews</span>
                 </li>   
-                </Link>
+                </Link> */}
                 <p className='title'>USEFUL LINKS</p>
                 <li>
                     <NotificationsNoneIcon className='icons'/>
@@ -69,7 +69,7 @@ const AdminSidebar = () => {
                     <AccountBoxIcon className='icons'/>
                     <span>Profile</span>
                 </li>
-                <Link to='/'>
+                <Link to='/login'>
                 <li>
                     <LogoutIcon className='icons'/>
                     <span>Logout</span>
