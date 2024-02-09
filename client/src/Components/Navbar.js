@@ -14,6 +14,7 @@ import ReviewsIcon  from '@mui/icons-material/Reviews';
 import LoginIcon  from '@mui/icons-material/Login';
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration"
 import AdminPanelIcon from "@mui/icons-material/AdminPanelSettings"
+import HailIcon from '@mui/icons-material/Hail';
 
 import { Link } from 'react-router-dom';
 
@@ -27,34 +28,35 @@ const Navbar = () => {
     const menuOptions =[
         {
             text: "Home",
-            icon: <HomeIcon/>
+            icon: <Link to='/'><HomeIcon/></Link>
         },
         {
             text: "How it works",
-            icon: <InfoIcon/>
+            icon: <Link to='/how-it-works'><InfoIcon/></Link>
         },
         {
             text: "Reviews",
-            icon: <ReviewsIcon/>
+            icon: <Link to='/reviews'><ReviewsIcon/></Link>
         },
         {
             text: "Login",
-            icon: <LoginIcon/>
+            icon: <Link to='/login'><LoginIcon/></Link>
         },
         {
-            text: "Sign Up",
-            icon: <AppRegistrationIcon/>
+            text: "Sign Up", 
+            icon: <Link to='/signup'><AppRegistrationIcon/></Link>
         },
         
+        {
+            text: "Booking", 
+            icon: <Link to='/Booking'><HailIcon/></Link>
+        },
         
-            role === "admin" &&{
+         role === "admin" && {
             text: "Admin Panel",
-            icon: <AdminPanelIcon/>
+            icon: <Link to='/admin'><AdminPanelIcon/></Link>
         },
-        {
-            text: "Booking",  // Add a new menu option for the booking page
-            icon: null // No specific icon for booking
-        },
+       
     ]
 
   return (
@@ -79,10 +81,8 @@ const Navbar = () => {
 
                 <li>
                     <Link to='/login'>Login</Link>
+                </li>
           
-                {/* <li>
-                    <Link to='/sign-up'>Sign-Up</Link>
-                </li> */}
                  { <li>
                     <Link to='/Booking'>Booking page</Link>
                 </li> }
