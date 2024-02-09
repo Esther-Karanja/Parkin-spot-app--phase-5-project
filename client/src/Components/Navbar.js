@@ -83,9 +83,9 @@ const Navbar = () => {
                     <Link to='/login'>Login</Link>
                 </li>
           
-                 { <li>
+                 <li>
                     <Link to='/Booking'>Booking page</Link>
-                </li> }
+                </li> 
 
 
                 <li>

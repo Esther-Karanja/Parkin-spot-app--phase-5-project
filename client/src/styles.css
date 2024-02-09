@@ -460,6 +460,28 @@
     border-radius: 5px;
     align-self: flex-end;
   }
+  .cellAction{
+    display:flex;
+    align-items: center;
+    gap: 15px;
+
+  }
+  .admin-parkingspots, .admin-users, .admin-reviews{
+    display: flex;
+    width: 100%;
+
+  }
+.parkingscontainer, .usersscontainer, .reviewscontainer{
+  flex:6;
+
+}
+.parkingspotstable,.reviewstable, .parkingspotstable{
+  height: 600px;
+  padding: 20px;
+}
+.cellWithrestrictions{
+  color: red;
+}
 
  
   

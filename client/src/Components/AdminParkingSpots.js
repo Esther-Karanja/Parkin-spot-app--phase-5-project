@@ -2,19 +2,26 @@ import {React, useEffect, useState} from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminnavBar from './AdminnavBar'
 import { DataGrid, GridColDef,} from '@mui/x-data-grid';
-import {Link} from 'react-router-dom'
+import {Box, IconButton, Tooltip} from '@mui/material';
+import {Edit} from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ParkingSpots = () => {
 
   const actionColumn =[{field: "action", headerName: "Action", width: 200, renderCell:()=>{
     return(
-      <div className='cellAction'>
-        <Link to='/admin/parking-spots/parking-spotId'>
-           <div className='viewButton'>View</div>
-        </Link>
-        <div className='deleteButton'>Delete</div>
-        <div className='updateButton'>Update</div>
-      </div>
+      <Box>
+       <Tooltip title='Edit'>
+           <IconButton onClick={()=>{}}>
+               <Edit/>
+           </IconButton>
+       </Tooltip>
+       <Tooltip title='Delete'>
+           <IconButton onClick={()=>{}}>
+               <DeleteIcon/>
+           </IconButton>
+       </Tooltip>
+   </Box>
     )
   }}]
 
@@ -63,6 +70,7 @@ const ParkingSpots = () => {
         rowsPerPageOptions={[5]}
         pageSizeOptions={[5,10, 15, 20, 25, 30]}
         checkboxSelection
+        getRowId={(row) => row.id}
       />
         </div>
       </div>
