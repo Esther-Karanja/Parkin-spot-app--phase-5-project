@@ -45,9 +45,8 @@ with app.app_context():
         _is_activated = False,
         phone = "09432740"
     )
-    C"""
-
-    """review1 = Review(
+    
+    review1 = Review(
         review = "Kibera Parking",
         location = "Very spacious",
         user_firstname = "Kevin",
@@ -116,7 +115,7 @@ with app.app_context():
 
     reviews = [review1, review2, review3, review4, review5, review6, review7, review8, review9, review10, review11]
     db.session.add_all(reviews)
-    db.session.commit()"""
+    db.session.commit()
 
     admin_user = User(
         firstname = "Feni",
