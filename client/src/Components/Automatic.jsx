@@ -113,10 +113,10 @@ const AutomaticBookingForm = () => {
             <input type="search" className="form-control" id="to-input" placeholder="To" />
           </div>
           <div className="form-group">
-            <b><label htmlFor="to-input">Entry time</label></b>
+            <b><label htmlFor="to-input">Location</label></b>
             <input type="text" className="form-control" placeholder="Step At" />
           </div>
-          <button id="submit" type="submit" className="btn btn-primary">Submit</button>
+          <button id="submit" type="submit" className="btn btn-primary"color='#fc6a6a'>Submit</button>
         </form>
         <div id="form" className="form-horizontal col-sm-4">
           <div className="form-group">
