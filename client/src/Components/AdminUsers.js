@@ -2,7 +2,6 @@ import {React, useEffect, useState} from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminnavBar from './AdminnavBar'
 import {DataGrid} from '@mui/x-data-grid';
-// import {Link} from 'react-router-dom'
 import {Box, IconButton, Tooltip} from '@mui/material'
 import {Edit} from '@mui/icons-material'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,7 +27,7 @@ const AdminUsers = () => {
 
   const [rows, setRows]= useState([])
 
-  const columns: GridColDef[] = [
+  const columns= [
     { field: 'id', headerName: 'ID'},
     { field: 'firstname', headerName: 'Firstname'},
     { field: 'surname', headerName: 'Surname'},
@@ -69,6 +68,7 @@ const AdminUsers = () => {
         rowsPerPageOptions={[5]}
         pageSizeOptions={[5,10, 15, 20, 25, 30]}
         checkboxSelection
+        getRowId={(row) => row.id}
       />
         </div>
       </div>
