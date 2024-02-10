@@ -297,6 +297,7 @@ def read_reviews():
         reviews = []
         for parking_review in Review.query.all():
             review_dict = {
+                "id": parking_review.id,
                 "review": parking_review.review,
                 "location" : parking_review.location,
                 "user_firstname": parking_review.user_firstname,
