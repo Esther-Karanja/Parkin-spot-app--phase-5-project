@@ -102,6 +102,12 @@
     width: 100%;
     max-width: 640px;
     background-color: white;
+    
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
 }
   
 .pop-up-content input, textarea{
@@ -197,7 +203,4 @@
         align-items: center;
     }
 
-    .search-bar{
-        
-    }
 }
