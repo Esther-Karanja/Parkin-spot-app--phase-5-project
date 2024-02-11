@@ -108,6 +108,31 @@ def get_users():
 
     return response
 
+@app.route('/update-user/<int:id>',methods=['PATCH'])
+def update_user(id):
+    user = User.query.filter_by(id=id).first()
+
+    if not user:
+        return make_response(jsonify({"message":"User does not exist", "status": "error"}),404)
+    
+    data = request.get_json()
+
+    if 'role' in data:
+        user.role = data['role']
+
+    db.session.commit()
+
+    return make_response(jsonify({"message": "User successfully updated", "status": "success"}), 200)
+
+@app.route('/delete-user/<int:id>',methods=['DELETE'])
+def delete_user(id):
+    user = User.query.filter_by(id=id).first()
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"User successfully deleted", "status": "success"}),200)
+
 def form_parking_dict(parking_resp):
     pricing = parking_resp.pricing
     ps_dict = {
