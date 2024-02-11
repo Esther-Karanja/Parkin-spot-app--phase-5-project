@@ -29,6 +29,7 @@ function App() {
         <Route path= "/AutomaticBookingForm"element={<AutomaticBookingForm />} />
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/login" element={<Login/>}/>
+
         <Route path="/admin">
           <Route index element={<AdminPanel/>}/>
           <Route path="user" element={<AdminUsers/>}/> 
@@ -36,6 +37,7 @@ function App() {
           {/* <Route path="reviews" element={<AdminReviews/>}/> */}
         </Route>
       </Routes>
+
     </div>
   );
 }
