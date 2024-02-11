@@ -176,7 +176,6 @@ def reverse_geocoding(input_location):
 
 @client_endpoint
 @app.route('/parking',methods=['GET'])
-
 def get_parkings():
     location = request.args.get('location')
     
@@ -272,8 +271,8 @@ def add_parking():
 #@admin_endpoint
 @app.route('/update-parking',methods=['PATCH'])
 def update_parking():
-    location = request.args.get('location')
-    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+    id = request.args.get('id')
+    parking_spot = ParkingSpot.query.filter_by(id=id).first()
 
     if not parking_spot:
         return make_response(jsonify({"message":"Car park does not exist"}),404)
@@ -290,7 +289,7 @@ def update_parking():
         parking_spot.capacity = data['capacity']
 
     if 'pricing' in data:
-        parking_spot.pricing = data['pricing']
+        parking_spot.pricing = str(data['pricing'])
 
     if 'restrictions' in data:
         parking_spot.restrictions = data['restrictions']
@@ -303,14 +302,15 @@ def update_parking():
 
     db.session.commit()
 
-    return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
+    return make_response(jsonify({"message": "Parking spot successfully updated", "status": "success"}), 200)
 
 #@admin_endpoint
 @app.route('/delete-parking',methods=['DELETE'])
 def delete_parking():
-    location = request.args.get('location')
-    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+    id = request.args.get('id')
+    parking_spot = ParkingSpot.query.filter_by(id=id).first()
 
+    # cascade delete
     db.session.delete(parking_spot)
     db.session.commit()
 
