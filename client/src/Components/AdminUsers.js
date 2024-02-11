@@ -10,12 +10,12 @@ import CancelIcon from '@mui/icons-material/Close'
 
 
 const AdminUsers = () => {
-  // const [editRowId, setEditRowId] = useState(null)
+  const [editRowId, setEditRowId] = useState(null)
   const [rows, setRows]= useState([])
   const [rowModesModel, setRowModesModel] = useState({})
 
   const handleEditClick = (id) => {
-    //setEditRowId(id)
+    setEditRowId(id)
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
   }
 
@@ -26,7 +26,10 @@ const AdminUsers = () => {
   }
 
   const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.View },
+    }))
   }
 
   const handleCancelClick = (id) => () => {
@@ -36,41 +39,37 @@ const AdminUsers = () => {
     }))
   }
 
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel)
+  const handleUpdate = (newRow) => {
+    
+    const newRole = {
+      role: newRow.role
+    }
+    console.log(newRole)
+    fetch(`http://localhost:5000/update-user/${editRowId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newRole)
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        if (response.status === "success") {
+          const updatedRow = { ...newRow, isNew: false }
+          setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
+          console.log("User updated successfully.")
+      } else {
+        console.error("Failed to update user.")
+      }
+    })
+    .catch((error) => {
+      console.error("Error occurred while updating user:", error)
+    })
+    return newRow
   }
 
-  const processRowUpdate = (oldrow,newRow) => {
-    console.log(oldrow)
-    console.log(newRow)
-    const updatedRow = { ...newRow, isNew: false }
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)))
-    console.log(updatedRow)
-    // return updatedRow
-    
-    // const newRole = {
-    //   role: newRow.role
-    // }
-    // console.log(newRole)
-    // fetch(`http://localhost:5000/update-user/${editRowId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(newRole)
-    // })
-    //   .then((r) => r.json())
-    //   .then((response) => {
-    //     if (response.status === "success") {
-    //     console.log("User updated successfully.")
-    //   } else {
-    //     console.error("Failed to update user.")
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error("Error occurred while updating user:", error);
-    // })
-    
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel)
   }
 
   const handleDelete = (id) => {
@@ -81,14 +80,14 @@ const AdminUsers = () => {
       .then((response) => {
         console.log(response)
         if (response.status === "success") {
-        setRows(rows.filter(row => row.id !== id));
-        console.log("User deleted successfully.");
+        setRows(rows.filter(row => row.id !== id))
+        console.log("User deleted successfully.")
       } else {
-        console.error("Failed to delete user.");
+        console.error("Failed to delete user.")
       }
     })
     .catch((error) => {
-      console.error("Error occurred while deleting user:", error);
+      console.error("Error occurred while deleting user:", error)
     })
   }
   
@@ -149,6 +148,7 @@ const AdminUsers = () => {
     .then(resp=>{
       setRows(resp)})
   },[])
+
   return (
     <div className='admin-users'>
       <AdminSidebar/>
@@ -177,7 +177,7 @@ const AdminUsers = () => {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={(updatedRow, originalRow) => 
-          processRowUpdate(updatedRow, originalRow)
+          handleUpdate(updatedRow)
         }
         onProcessRowUpdateError={(error) => console.error(error)}
       />
