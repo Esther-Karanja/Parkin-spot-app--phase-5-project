@@ -9,9 +9,9 @@
     max-width: 50%;
     height: auto;
   } 
-  a {
+  /* a {
     text-decoration: none;
-  }
+  } */
   .App {
     height: 100%;
     width: 100%;
@@ -45,6 +45,7 @@
     color: black;
     font-size: 1.1rem;
     font-weight: 600;
+    text-decoration: none;
   } 
 
   nav ul {

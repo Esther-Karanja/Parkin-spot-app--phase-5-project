@@ -1,8 +1,8 @@
-"""empty message
+"""Added three columns to reviews table
 
-Revision ID: 15d51ae58424
-Revises: 
-Create Date: 2024-02-11 20:32:22.785991
+Revision ID: 44eae04471d5
+Revises: 85093c77ed34
+Create Date: 2024-02-08 10:31:17.333063
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '15d51ae58424'
-down_revision = None
+revision = '44eae04471d5'
+down_revision = 'f78ebdba1857'
 branch_labels = None
 depends_on = None
 
