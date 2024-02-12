@@ -108,6 +108,31 @@ def get_users():
 
     return response
 
+@app.route('/update-user/<int:id>',methods=['PATCH'])
+def update_user(id):
+    user = User.query.filter_by(id=id).first()
+
+    if not user:
+        return make_response(jsonify({"message":"User does not exist", "status": "error"}),404)
+    
+    data = request.get_json()
+
+    if 'role' in data:
+        user.role = data['role']
+
+    db.session.commit()
+
+    return make_response(jsonify({"message": "User successfully updated", "status": "success"}), 200)
+
+@app.route('/delete-user/<int:id>',methods=['DELETE'])
+def delete_user(id):
+    user = User.query.filter_by(id=id).first()
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return make_response(jsonify({"message":"User successfully deleted", "status": "success"}),200)
+
 def form_parking_dict(parking_resp):
     pricing = parking_resp.pricing
     ps_dict = {
@@ -151,7 +176,6 @@ def reverse_geocoding(input_location):
 
 @client_endpoint
 @app.route('/parking',methods=['GET'])
-
 def get_parkings():
     location = request.args.get('location')
     
@@ -247,8 +271,8 @@ def add_parking():
 #@admin_endpoint
 @app.route('/update-parking',methods=['PATCH'])
 def update_parking():
-    location = request.args.get('location')
-    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+    id = request.args.get('id')
+    parking_spot = ParkingSpot.query.filter_by(id=id).first()
 
     if not parking_spot:
         return make_response(jsonify({"message":"Car park does not exist"}),404)
@@ -265,7 +289,7 @@ def update_parking():
         parking_spot.capacity = data['capacity']
 
     if 'pricing' in data:
-        parking_spot.pricing = data['pricing']
+        parking_spot.pricing = str(data['pricing'])
 
     if 'restrictions' in data:
         parking_spot.restrictions = data['restrictions']
@@ -278,14 +302,15 @@ def update_parking():
 
     db.session.commit()
 
-    return make_response(jsonify({"message": "Parking spot successfully updated"}), 200)
+    return make_response(jsonify({"message": "Parking spot successfully updated", "status": "success"}), 200)
 
 #@admin_endpoint
 @app.route('/delete-parking',methods=['DELETE'])
 def delete_parking():
-    location = request.args.get('location')
-    parking_spot = ParkingSpot.query.filter_by(location=location).first()
+    id = request.args.get('id')
+    parking_spot = ParkingSpot.query.filter_by(id=id).first()
 
+    # cascade delete
     db.session.delete(parking_spot)
     db.session.commit()
 
@@ -297,6 +322,7 @@ def read_reviews():
         reviews = []
         for parking_review in Review.query.all():
             review_dict = {
+                "id": parking_review.id,
                 "review": parking_review.review,
                 "location" : parking_review.location,
                 "user_firstname": parking_review.user_firstname,
@@ -332,6 +358,10 @@ def filtered_reviews(location):
 @app.route('/add-reviews',methods=['POST'])
 def add_reviews():
     data = request.get_json()
+    required_fields = ['firstname', 'surname', 'location', 'review']
+    if not all(field in data for field in required_fields):
+        return make_response(jsonify({"msg": F"{required_fields}", "status": "error"}))
+    
     new_review = Review(
         user_firstname = data['firstname'],
         user_surname = data['surname'],
@@ -342,7 +372,7 @@ def add_reviews():
     db.session.add(new_review)
     db.session.commit()
 
-    return make_response(jsonify({"message":"Review successfully created"}),201)
+    return make_response(jsonify({"message":"Review successfully created","status": "success"}),201)
 
 #@admin_endpoint
 @app.route('/delete-review',methods=['DELETE'])

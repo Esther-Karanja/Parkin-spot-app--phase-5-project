@@ -10,34 +10,46 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { Link } from 'react-router-dom';
 
 const AdminSidebar = () => {
   return (
     <div className='sidebar'>
         <div className='top'>
+        <Link to='/admin'>
             <span className='admin-logo'>Admin</span>
+        </Link>
         </div>
         <hr/>
         <div className='center'>
             <ul>
-                <p className='title'>MAIN</p>
+               <p className='title'>MAIN</p>
                 <li>
                     <DashboardCustomizeIcon className='icons'/>
                     <span>Dashboard</span>
                 </li>
+                
                 <p className='title'>LISTS</p>
-                <li>
+                <Link to='/admin/user'>
+                 <li>
                     <PersonIcon className='icons'/>
                     <span>Users</span>
                 </li>
-                <li>
+                </Link>
+                
+                <Link to='/admin/parkingspots'>
+                 <li>
                     <DirectionsCarIcon className='icons'/>
                     <span>Parking Spots</span>
-                </li>
+                 </li>
+                </Link>
+                    
+                {/* <Link to='/admin/reviews'>
                 <li>
                     <ReviewsIcon className='icons'/>
                     <span>Reviews</span>
-                </li>
+                </li>   
+                </Link> */}
                 <p className='title'>USEFUL LINKS</p>
                 <li>
                     <NotificationsNoneIcon className='icons'/>
@@ -57,10 +69,12 @@ const AdminSidebar = () => {
                     <AccountBoxIcon className='icons'/>
                     <span>Profile</span>
                 </li>
+                <Link to='/login'>
                 <li>
                     <LogoutIcon className='icons'/>
                     <span>Logout</span>
                 </li>
+                </Link>
             </ul>
         </div>
         <p className='title'>USER MODE</p>
