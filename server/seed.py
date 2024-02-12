@@ -122,10 +122,10 @@ with app.app_context():
         surname = "Akoth",
         email = "admin@f1.com",
         password = "admin",
-        _is_activated = False,
+        is_activated = False,
         phone = "243789456",
         role="admin"
     )
 
     db.session.add(admin_user)
-    db.session.commit()
+    db.session.commit()"""
