@@ -20,7 +20,6 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-
         <Route path="/" element={<Home />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/reviews" element={<Reviews />} />
@@ -29,7 +28,6 @@ function App() {
         <Route path= "/AutomaticBookingForm"element={<AutomaticBookingForm />} />
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/login" element={<Login/>}/>
-
         <Route path="/admin">
           <Route index element={<AdminPanel/>}/>
           <Route path="user" element={<AdminUsers/>}/> 
